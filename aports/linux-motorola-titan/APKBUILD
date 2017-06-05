@@ -1,17 +1,13 @@
-# Based on linux-lg-mako. Changes:
-# - add findutils makedepend (necessary for the initramfs)
-# - it builds an initramfs - do not use ramdisk.cpio and
-#	ramdisk-recovery-device.cpio, in there, always use the
-#	initramfs from the recovery partition ("isorec")
-# - directly boot to that initramfs, not only when the recovery
-#	key combination was pressed.
-# - use Alpine's busybox-static instead of the pre-compiled
-#	binary, that comes with the source
+# APKBUILD based on linux-vanilla aport. Changes:
+# - disabled module installation
+# - add !check !tracedeps
+# - package: just install zimage and kernel.release, because the kernel config
+#      does not generate modules or dtb files
+# - do not create -dev subpackage (makes no sense without module support)
 #
-# Kernel config changes, based on: arch/arm/configs/i9100_defconfig
+# Kernel config changes, based on: arch/arm/configs/titan_defconfig
+# Changes:
 # - enable devtmpfs (needed for udev -> touch support in weston)
-# - change compression from CONFIG_KERNEL_LZMA=y to
-#	CONFIG_KERNEL_GZIP=y (so it works with busybox)
 
 _vendor=motorola
 _flavor=motorola-titan
@@ -19,26 +15,26 @@ _hash="09cff47d6b79b73ecc3461e227abf09faaa9e754"
 _config="config-${_flavor}.armhf"
 
 pkgname=linux-${_flavor}
-pkgver=3.0.101
+pkgver=3.4.113
 case $pkgver in
 	*.*.*)  _kernver=${pkgver%.*};;
 	*.*) _kernver=$pkgver;;
 esac
-pkgrel=5
+pkgrel=0
 arch="armhf"
 pkgdesc="Motorola Moto G 2014 kernel from LineageOS"
 url="https://github.com/LineageOS/android_kernel_motorola_msm8226"
 depends="postmarketos-mkinitfs"
-makedepends="perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev xz
-findutils busybox-static"
+makedepends="perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev xz"
 options="!strip !check !tracedeps"
 install=
 source="
-	$pkgname-$_hash.zip::https://github.com/LineageOS/android_kernel_motorola_msm8226/archive/${_hash}.zip
-	$_config
-	compiler-gcc6.h
-	changes1.diff
-	init
+    $pkgname-$_hash.zip::https://github.com/LineageOS/android_kernel_motorola_msm8226/archive/${_hash}.zip
+    $_config
+    compiler-gcc6.h
+    changes1.patch
+    gcc5-compile.patch
+    Wno-error.patch
 "
 subpackages=""
 license="GPL2"
@@ -73,25 +69,8 @@ prepare() {
 		return 1
 	fi
 
-	# Use Alpine's busybox.static instead of the pre-compiled busybox shipped
-	# with the source
-	#cp -v /bin/busybox.static "$ksrcdir"/usr/galaxys2_initramfs_files/busybox
-
-	# do not use ramdisk.cpio and ramdisk-recovery-device.cpio, always use
-	# the initramfs from the recovery partition ("isorec"), so we can build
-	# it later and independently from the kernel. also directly boot that
-	# partition, not only when the recovery key combination was used.
-	#cd "$ksrcdir"/usr/
-	#mv galaxys2_initramfs.list galaxys2_initramfs.list_old
-	#grep -v "../../ramdisk" galaxys2_initramfs.list_old > galaxys2_initramfs.list \
-	#	|| return 1
-	#cp -v "$srcdir"/init "$ksrcdir"/usr/galaxys2_initramfs_files/init || return 1
-
 	# gcc6 support
 	cp -v "$srcdir/compiler-gcc6.h" "$ksrcdir/include/linux/" || return 1
-
-	# minor changes
-	patch -p0 -d "$ksrcdir" < "$srcdir/changes1.diff" || return 1
 
 	mkdir -p "$srcdir"/build
 	cp "$srcdir"/$_config "$srcdir"/build/.config || return 1
