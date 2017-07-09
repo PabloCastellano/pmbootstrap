@@ -9,11 +9,9 @@ depends=""
 makedepends=""
 subpackages=""
 source="
-    wcnss_qmi_client.c
-    wcnss_qmi_client.h
-    wcnss_service.c
-    Makefile
-    no_android.patch"
+    $pkgname.tar.gz::https://android.googlesource.com/platform/hardware/qcom/wlan/+archive/master/qcwcn/wcnss-service.tar.gz
+    01_add_makefile.patch
+    02_no_android.patch"
 options=""
 
 
@@ -51,8 +49,6 @@ package() {
 	install -D -m755 "$srcdir"/wcnss_service \
 		"$pkgdir"/bin/wcnss_service || return 1
 }
-sha512sums="13c867c187d4a8fdfbf9a8b1bbc0323a9c26898f720bfb4a28951b26d78f021f7ace49ef1bf068dd3916acf0e83f82f8fce34f3636e487fa7c961e6c5c43bfa2  wcnss_qmi_client.c
-88521e87e00336445317ad16fc7b40d8c80d70ade7718135d8b9cd0c11a4035e37bf3ed5203e5600327b9a62023ab59f0a3768013bcb0b11ed2923560e36c8b2  wcnss_qmi_client.h
-79d178dff2faeb1f0dd930e4a033df08cfce77fa281afb1add0358cdb3c92ad12e78e6567884a8521861caaea505251de144467b49d9bca85974a6abd21a7783  wcnss_service.c
-e7d9cc80ce981f876b6c761b7744f272fe26681c230fdc0938e0617c739a3c4126aa3527ffbf6fa67ab0eb75c0714c6bd74e14b596e5135cf316c87d0ce0f37e  Makefile
-cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e  no_android.patch"
+sha512sums="ce359f1fe49d8f3162ceac5819897c496d4d04f8aedbc205214d7fdea264652ae03ef6ff01e72f4f01266318472c997faff26e7ec1393089f79702a7b1edbc3f  wcnss-service.tar.gz
+2e94bfb0e38f24877d5460585965479d27a3d3e30fea1849e5824ada8082528cace8303d52b116a4334595ec8f696db515020665d00e4b7922f799823b9ec0ad  01_add_makefile.patch
+0ffac184fb20a4d82e0de6d5f9fcd1a7ffcdcf9988194a95a968fef038ad24d21675eb61277b3782a8255135fb1b40c2582d18db64a8af6665c71216a01c8431  02_no_android.patch"
