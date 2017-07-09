@@ -10,10 +10,17 @@ makedepends=""
 subpackages=""
 source="
     $pkgname.tar.gz::https://android.googlesource.com/platform/hardware/qcom/wlan/+archive/master/qcwcn/wcnss-service.tar.gz
+    wcnss_files.tar.gz
     01_add_makefile.patch
     02_no_android.patch"
-options=""
+options="!strip !check !tracedeps"
 
+
+unpack() {
+    cd "$srcdir"
+    tar zxvf $pkgname.tar.gz
+    tar zxvf wcnss_files.tar.gz
+}
 
 prepare() {
     local _patch_failed=
@@ -48,7 +55,15 @@ build() {
 package() {
 	install -D -m755 "$srcdir"/wcnss_service \
 		"$pkgdir"/bin/wcnss_service || return 1
+
+    cd "$srcdir"
+    for ext in b00 b01 b02 b04 b06 b07 b08 b09 mdt; do
+        install -D -m644 wcnss."$ext" \
+            "$pkgdir"/etc/firmware/wcnss."$ext" || return 1
+    done
 }
+
 sha512sums="ce359f1fe49d8f3162ceac5819897c496d4d04f8aedbc205214d7fdea264652ae03ef6ff01e72f4f01266318472c997faff26e7ec1393089f79702a7b1edbc3f  wcnss-service.tar.gz
+d69ab3b138ba8a3ac8f41216d573fe5613bf7446ccb03863f0979938b90cc812bc907c1c638750d83cc5c47a4c0c456ba0d8be5c529e19d974c5af9ef796a195  wcnss_files.tar.gz
 2e94bfb0e38f24877d5460585965479d27a3d3e30fea1849e5824ada8082528cace8303d52b116a4334595ec8f696db515020665d00e4b7922f799823b9ec0ad  01_add_makefile.patch
 0ffac184fb20a4d82e0de6d5f9fcd1a7ffcdcf9988194a95a968fef038ad24d21675eb61277b3782a8255135fb1b40c2582d18db64a8af6665c71216a01c8431  02_no_android.patch"
