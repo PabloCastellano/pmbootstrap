@@ -1,0 +1,37 @@
+diff --git a/drivers/net/wireless/wcnss/wcnss_wlan.c b/drivers/net/wireless/wcnss/wcnss_wlan.c
+index 5f3f453..71b8627 100644
+--- a/drivers/net/wireless/wcnss/wcnss_wlan.c
++++ b/drivers/net/wireless/wcnss/wcnss_wlan.c
+@@ -253,7 +253,7 @@ static struct notifier_block wnb = {
+ 	.notifier_call = wcnss_notif_cb,
+ };
+ 
+-#define NVBIN_FILE "wlan/prima/WCNSS_qcom_wlan_nv.bin"
++#define NVBIN_FILE "/lib/firmware/postmarketos/wlan/prima/WCNSS_qcom_wlan_nv.bin"
+ 
+ /*
+  * On SMD channel 4K of maximum data can be transferred, including message
+diff --git a/drivers/staging/prima/CORE/VOSS/inc/wlan_hdd_misc.h b/drivers/staging/prima/CORE/VOSS/inc/wlan_hdd_misc.h
+index a210fe3..7a7f465 100644
+--- a/drivers/staging/prima/CORE/VOSS/inc/wlan_hdd_misc.h
++++ b/drivers/staging/prima/CORE/VOSS/inc/wlan_hdd_misc.h
+@@ -30,13 +30,13 @@
+ 
+ #ifdef MSM_PLATFORM
+ #ifdef QC_WLAN_CHIPSET_PRIMA
+-#define WLAN_INI_FILE              "wlan/prima/WCNSS_qcom_cfg.ini"
+-#define WLAN_CFG_FILE              "wlan/prima/WCNSS_cfg.dat"
++#define WLAN_INI_FILE              "/lib/firmware/postmarketos/wlan/prima/WCNSS_qcom_cfg.ini"
++#define WLAN_CFG_FILE              "/lib/firmware/postmarketos/wlan/prima/WCNSS_cfg.dat"
+ #define WLAN_FW_FILE               ""
+-#define WLAN_NV_FILE               "wlan/prima/WCNSS_qcom_wlan_nv.bin"
+-#define WLAN_DICT_FILE             "wlan/prima/WCNSS_wlan_dictionary.dat"
+-#define WLAN_COUNTRY_INFO_FILE     "wlan/prima/WCNSS_wlan_country_info.dat"
+-#define WLAN_HO_CFG_FILE           "wlan/prima/WCNSS_wlan_ho_config"
++#define WLAN_NV_FILE               "/lib/firmware/postmarketos/wlan/prima/WCNSS_qcom_wlan_nv.bin"
++#define WLAN_DICT_FILE             "/lib/firmware/postmarketos/wlan/prima/WCNSS_wlan_dictionary.dat"
++#define WLAN_COUNTRY_INFO_FILE     "/lib/firmware/postmarketos/wlan/prima/WCNSS_wlan_country_info.dat"
++#define WLAN_HO_CFG_FILE           "/lib/firmware/postmarketos/wlan/prima/WCNSS_wlan_ho_config"
+ #else
+ #define WLAN_INI_FILE              "wlan/volans/WCN1314_qcom_cfg.ini"
+ #define WLAN_CFG_FILE              "wlan/volans/WCN1314_cfg.dat"

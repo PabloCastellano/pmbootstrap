@@ -23,11 +23,11 @@ case $pkgver in
 	*.*.*)  _kernver=${pkgver%.*};;
 	*.*) _kernver=$pkgver;;
 esac
-pkgrel=1
+pkgrel=2
 arch="armhf"
 pkgdesc="Motorola Moto G 2014 kernel from LineageOS"
 url="https://github.com/LineageOS/android_kernel_motorola_msm8226"
-depends="postmarketos-mkinitfs"
+depends="postmarketos-mkinitfs wcnss-service"
 makedepends="perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev xz"
 options="!strip !check !tracedeps"
 install=
@@ -38,6 +38,8 @@ source="
     changes1.patch
     gcc5-compile.patch
     Wno-error.patch
+    change_wlan_prima_paths.patch
+    extra/WCNSS_qcom_wlan_cal.bin
 "
 subpackages=""
 license="GPL2"
@@ -105,6 +107,17 @@ package() {
 
 	install -D "$srcdir/build/include/config/kernel.release" \
 		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
+
+    echo "--[ Installing vendor files ]--"
+    # install wifi firmware
+    install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_qcom_wlan_nv.bin" \
+        "$pkgdir/lib/firmware/postmarketos/wifi/WCNSS_qcom_wlan_nv.bin"
+    install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_qcom_cfg.ini" \
+        "$pkgdir/lib/firmware/postmarketos/wifi/WCNSS_qcom_cfg.ini"
+    install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat" \
+        "$pkgdir/lib/firmware/postmarketos/wifi/WCNSS_cfg.dat"
+    install -Dm644 "$srcdir/WCNSS_qcom_wlan_cal.bin" \
+        "$pkgdir/lib/firmware/postmarketos/wifi/WCNSS_qcom_wlan_cal.bin"
 }
 
 sha512sums="1a5599b1fe0d36a9804b2379cfc69f07ebd6f2fa472c7a7e4ae070131728c46db5f2b9766af282fd64ea075772f700c3b816ca7b7c90d24e21e9da289317ca37  linux-motorola-titan-09cff47d6b79b73ecc3461e227abf09faaa9e754.zip
@@ -112,4 +125,6 @@ sha512sums="1a5599b1fe0d36a9804b2379cfc69f07ebd6f2fa472c7a7e4ae070131728c46db5f2
 d80980e9474c82ba0ef1a6903b434d8bd1b092c40367ba543e72d2c119301c8b2d05265740e4104ca1ac5d15f6c4aa49e8776cb44264a9a28dc551e0d1850dcc  compiler-gcc6.h
 00bd2504cb922204c3b6a9ce243918f44d12f08e12f64535b9ec9f91d827160c4d5da85c3b84788a5f92d9eca63552265a203916505918367e2d397edbe148a8  changes1.patch
 4c13711fdcdce3ac0c4d30b79da7a331a9f32d46ad0b9572419b82d58db6eed76f728a340848d66a6378702749c56247439abb26fc1df0d3f5cfd1ef5b53acf9  gcc5-compile.patch
-d77966385f1aeb17fad6c3989766e874fea9d5818433d0c92c106dfd9aa3065102f018afb38678b0d741192d9efa4ede0ac4278802bf0878e3dec62dec64f50c  Wno-error.patch"
+d77966385f1aeb17fad6c3989766e874fea9d5818433d0c92c106dfd9aa3065102f018afb38678b0d741192d9efa4ede0ac4278802bf0878e3dec62dec64f50c  Wno-error.patch
+ed919b3be1385e02cd74828f3640b4ea5c160cd3d32bacfd2f0d17c62a87c01a8a9bda609281609f9b0a84967096aea409c84a46fd9bd2e1a8cafca77acd9d24  change_wlan_prima_paths.patch
+bb32dbc6bf730ce9f44eb0b37064cd99ad9454d820327462da1e49268714da3e7aab07e77a98b648e7c44aa2c19703069a81d27394fac5c199e93d37d0c51d10  WCNSS_qcom_wlan_cal.bin"
