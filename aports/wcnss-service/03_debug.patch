@@ -1,0 +1,102 @@
+From f0df880a36f6bb0c329f2d09bde954f6103580e5 Mon Sep 17 00:00:00 2001
+From: Pablo Castellano <pablo@anche.no>
+Date: Mon, 10 Jul 2017 01:37:06 +0200
+Subject: [PATCH] debug easier + swap defines
+
+---
+ wcnss_service.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/wcnss_service.c b/wcnss_service.c
+index 995d3fb..694e8a7 100644
+--- a/wcnss_service.c
++++ b/wcnss_service.c
+@@ -69,8 +69,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #define WCNSS_FACT_FILE "/lib/firmware/postmarketos/wifi/WCN_FACTORY"
+ #define WCNSS_DEVICE    "/dev/wcnss_wlan"
+ #define WCNSS_CTRL      "/dev/wcnss_ctrl"
+-#define WLAN_INI_FILE_DEST   "/data/misc/wifi/WCNSS_qcom_cfg.ini"
+-#define WLAN_INI_FILE_SOURCE "/lib/firmware/postmarketos/wifi/WCNSS_qcom_cfg.ini"
++#define WLAN_INI_FILE_DEST   "/lib/firmware/postmarketos/wifi/WCNSS_qcom_cfg.ini"
++#define WLAN_INI_FILE_SOURCE "/data/misc/wifi/WCNSS_qcom_cfg.ini"
+ #define WCNSS_HAS_CAL_DATA\
+ 		"/sys/module/wcnsscore/parameters/has_calibrated_data"
+ #define WLAN_DRIVER_ATH_DEFAULT_VAL "0"
+@@ -233,8 +233,8 @@ int wcnss_read_and_store_cal_data(int fd_dev)
+ 			fd_file = open(WCNSS_CAL_FILE, O_WRONLY
+ 					| O_CREAT | O_TRUNC, 0664);
+ 			if (fd_file < 0) {
+-				printf("Failed to open cal file : %s",
+-						strerror(errno));
++				printf("Failed to open cal file : %s (%s)\n",
++						WCNSS_CAL_FILE, strerror(errno));
+ 				rc = fd_file;
+ 				goto exit;
+ 			}
+@@ -330,13 +330,13 @@ void setup_wlan_config_file()
+ 
+ 	rfd = open(WLAN_INI_FILE_SOURCE, O_RDONLY);
+ 	if (rfd < 0) {
+-		printf("Failed to open ini source file: %s", strerror(errno));
++		printf("Failed to open ini source file: %s (%s)\n", WLAN_INI_FILE_SOURCE, strerror(errno));
+ 		return;
+ 	}
+ 
+ 	wfd = open(WLAN_INI_FILE_DEST, O_WRONLY | O_CREAT | O_TRUNC, 0660);
+ 	if (wfd < 0) {
+-		printf("Failed to open ini dest file: %s", strerror(errno));
++		printf("Failed to open ini dest file: %s (%s)\n", WLAN_INI_FILE_DEST, strerror(errno));
+ 		close(rfd);
+ 		return;
+ 	}
+@@ -352,15 +352,15 @@ void setup_wlan_config_file()
+ 
+ 	rc = utime(WLAN_INI_FILE_DEST, &new_time);
+ 	if (rc != 0)
+-		printf("could not preserve the timestamp %s", strerror(errno));
++		printf("could not preserve the timestamp %s\n", strerror(errno));
+ 
+ 	grp = getgrnam("wifi");
+ 	if (grp != NULL) {
+ 		rc = chown(WLAN_INI_FILE_DEST, -1, grp->gr_gid);
+ 		if (rc != 0)
+-			printf("Failed change group of ini file %s", strerror(errno));
++			printf("Failed change group of ini file %s\n", strerror(errno));
+ 	} else {
+-			printf("Failed to get group wifi %s", strerror(errno));
++			printf("Failed to get group wifi %s\n", strerror(errno));
+ 	}
+ 
+ 	property_set("wlan.driver.config", WLAN_INI_FILE_DEST);
+@@ -407,7 +407,7 @@ void setup_wcnss_parameters(int *cal, int nv_mac_addr)
+ 
+ 	fd = open(WCNSS_CTRL, O_WRONLY);
+ 	if (fd < 0) {
+-		printf("Failed to open %s : %s", WCNSS_CTRL, strerror(errno));
++		printf("Failed to open: %s (%s)\n", WCNSS_CTRL, strerror(errno));
+ 		return;
+ 	}
+ 
+@@ -542,7 +542,7 @@ int main(int argc, char *argv[])
+ 	int nom = 0;
+ #endif
+ 
+-	setup_wlan_config_file();
++	//setup_wlan_config_file();
+ 
+ #ifdef WCNSS_QMI
+ 	/* Call ESOC API to get the number of modems.
+@@ -591,8 +591,8 @@ nomodem:
+ 
+ 	fd_dev = open(WCNSS_DEVICE, O_RDWR);
+ 	if (fd_dev < 0) {
+-		printf("Failed to open wcnss device : %s",
+-				strerror(errno));
++		printf("Failed to open wcnss device: %s (%s)\n",
++				WCNSS_DEVICE, strerror(errno));
+ 		return fd_dev;
+ 	}
+ 
+-- 
+2.7.4
+
