@@ -1,6 +1,6 @@
 pkgname=device-motorola-titan
 pkgver=1
-pkgrel=7
+pkgrel=8
 pkgdesc="Motorola Moto G 2014"
 url="https://github.com/postmarketOS"
 arch="noarch"
@@ -19,6 +19,8 @@ build() {
 package() {
 	install -D -m644 "$srcdir/deviceinfo" \
 		"$pkgdir/etc/deviceinfo"
+	install -D -m644 "$srcdir"/50-firmware.rules \
+		"$pkgdir"/etc/udev/rules.d/50-firmware.rules
 	install -D -m644 "$srcdir"/90-android-touch-dev.rules \
 		"$pkgdir"/etc/udev/rules.d/90-android-touch-dev.rules
 	install -D -m644 "$srcdir"/initfs-hook.sh \
