@@ -5,4 +5,4 @@ index 0000000..d165a81
 +++ b/Makefile
 @@ -0,0 +1,2 @@
 +wcnss_service: wcnss_service.c
-+	$(CC) -o wcnss_service wcnss_service.c
++	$(CC) -o wcnss_service -DWCNSS_QMI wcnss_service.c

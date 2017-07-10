@@ -9,7 +9,12 @@ depends="linux-motorola-titan mkbootimg"
 makedepends=""
 install=""
 subpackages=""
-source="deviceinfo 90-android-touch-dev.rules initfs-hook.sh profile.sh"
+source="
+    deviceinfo
+    initfs-hook.sh
+    profile.sh
+    50-firmware.rules
+    90-android-touch-dev.rules"
 options="!check"
 
 build() {
@@ -17,8 +22,8 @@ build() {
 }
 
 package() {
-	install -D -m644 "$srcdir/deviceinfo" \
-		"$pkgdir/etc/deviceinfo"
+	install -D -m644 "$srcdir"/deviceinfo \
+		"$pkgdir"/etc/deviceinfo
 	install -D -m644 "$srcdir"/50-firmware.rules \
 		"$pkgdir"/etc/udev/rules.d/50-firmware.rules
 	install -D -m644 "$srcdir"/90-android-touch-dev.rules \
@@ -30,6 +35,7 @@ package() {
 }
 
 sha512sums="308a1aeca905a338bc20d46977a9cb9ab512dbb2fa5394bcdad598cfd6d9f02d6701a60c45ac61ef197635478893f40342ba153fb24fd7e4120a1d301eb98af7  deviceinfo
-f37e6324abf0b0fc8a3d360d6d11bb0648090a438a55ca7f04a9d494719e687ce445ae107ace642edf293afb6ca82615bcb5d0ddb6c46c1a7f8ee3c213b7c5c4  90-android-touch-dev.rules
 8590967fa10388a890fdfafdb1070b9ab22dc89e06a3a8834806c772191e3b67de7b914b0d68e5ddf581cee715cb90f3f24abcb8762c415ff328c6da23e55d52  initfs-hook.sh
-4fd7fceda05b9a7e5a7d32f737126c335de883d9caed799345c1016164e04d05819436a0dfd9e624499bbc1a9d0d56ba6e738f4458bc92ef1fe135845ae1aa85  profile.sh"
+4fd7fceda05b9a7e5a7d32f737126c335de883d9caed799345c1016164e04d05819436a0dfd9e624499bbc1a9d0d56ba6e738f4458bc92ef1fe135845ae1aa85  profile.sh
+900450155b4117c75ba256c5b0233a8590b0370afda4f7294a1a879176ec0745105e3d65afca6d0564b5dedd732ed85c4917a989a8e48289e0944196a99d9053  50-firmware.rules
+f37e6324abf0b0fc8a3d360d6d11bb0648090a438a55ca7f04a9d494719e687ce445ae107ace642edf293afb6ca82615bcb5d0ddb6c46c1a7f8ee3c213b7c5c4  90-android-touch-dev.rules"
