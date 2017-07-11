@@ -110,11 +110,11 @@ package() {
     echo "--[ Installing vendor files ]--"
     # install wifi firmware
     install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_qcom_wlan_nv.bin" \
-        "$pkgdir/lib/firmware/postmarketos/wlan/prima/WCNSS_qcom_wlan_nv.bin"
+        "$pkgdir/lib/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin"
     install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_qcom_cfg.ini" \
-        "$pkgdir/lib/firmware/postmarketos/wlan/prima/WCNSS_qcom_cfg.ini"
+        "$pkgdir/lib/firmware/wlan/prima/WCNSS_qcom_cfg.ini"
     install -Dm644 "$ksrcdir/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat" \
-        "$pkgdir/lib/firmware/postmarketos/wlan/prima/WCNSS_cfg.dat"
+        "$pkgdir/lib/firmware/wlan/prima/WCNSS_cfg.dat"
     install -Dm644 "$srcdir/WCNSS_qcom_wlan_cal.bin" \
         "$pkgdir/lib/firmware/postmarketos/wifi/WCNSS_qcom_wlan_cal.bin"
 }
