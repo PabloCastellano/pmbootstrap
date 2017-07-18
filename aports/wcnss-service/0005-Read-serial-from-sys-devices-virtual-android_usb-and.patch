@@ -1,7 +1,7 @@
-From 074bbacbbaf8a2a60ac53c9e4a0987a1f8f60d35 Mon Sep 17 00:00:00 2001
+From 1028adc9a853ad2fb060d575d691e0f5f30f2505 Mon Sep 17 00:00:00 2001
 From: Pablo Castellano <pablo@anche.no>
 Date: Tue, 18 Jul 2017 19:33:30 +0200
-Subject: [PATCH] Read serial from
+Subject: [PATCH 5/5] Read serial from
  /sys/devices/virtual/android_usb/android0/iSerial
 
 In case of error, default to a known working serial number

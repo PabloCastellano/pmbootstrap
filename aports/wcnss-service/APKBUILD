@@ -11,10 +11,11 @@ subpackages=""
 source="
     $pkgname.tar.gz::https://android.googlesource.com/platform/hardware/qcom/wlan/+archive/master/qcwcn/wcnss-service.tar.gz
     wcnss_files.tar.gz
-    01_add_makefile.patch
-    02_no_android.patch
-    03_debug.patch
-    0004-Read-serial-from-sys-devices-virtual-android_usb-and.patch
+    0001-Makefile.patch
+    0002-No-android.patch
+    0003-.patch
+    0004-debug-easier-swap-defines.patch
+    0005-Read-serial-from-sys-devices-virtual-android_usb-and.patch
     "
 options="!strip !check !tracedeps"
 
@@ -68,7 +69,8 @@ package() {
 
 sha512sums="ce359f1fe49d8f3162ceac5819897c496d4d04f8aedbc205214d7fdea264652ae03ef6ff01e72f4f01266318472c997faff26e7ec1393089f79702a7b1edbc3f  wcnss-service.tar.gz
 d69ab3b138ba8a3ac8f41216d573fe5613bf7446ccb03863f0979938b90cc812bc907c1c638750d83cc5c47a4c0c456ba0d8be5c529e19d974c5af9ef796a195  wcnss_files.tar.gz
-2e94bfb0e38f24877d5460585965479d27a3d3e30fea1849e5824ada8082528cace8303d52b116a4334595ec8f696db515020665d00e4b7922f799823b9ec0ad  01_add_makefile.patch
-0ffac184fb20a4d82e0de6d5f9fcd1a7ffcdcf9988194a95a968fef038ad24d21675eb61277b3782a8255135fb1b40c2582d18db64a8af6665c71216a01c8431  02_no_android.patch
-25ef6011bb566707e5468f69adc040fdf0ed9c06318d022d91020a49fce8778e30e3d7c17f69fe6c0d6705207f5ed181e8a4a2155d1b7e3e3962ea05b2cc4184  03_debug.patch
-0ab28b0e38348cc622185c6175883fa302cc3865e0136c3f6e796df7d506a41a4428af741f7033523a3e9c6a21522b7dde1c5affafed508a139e6b7913e28e04  0004-Read-serial-from-sys-devices-virtual-android_usb-and.patch"
+c80371c5183fba4b563ab484b5f678b0008f8da5e31790504b2a8add772fd041518aa7eedb3550e202e092ebe5ce38993f54c4fd3b918721ed4554e1766e76f7  0001-Makefile.patch
+4fd3b7cef647dce49ed3c81ad28324ee6b1f2c8803ed53eee282e8a1c457e9c9bbf66fbad46d3dfd7ac14865b4c491f234c8008d77775b7f7e621a997a98c57f  0002-No-android.patch
+da1d1c8c84931fdbb1d5b7e7b8f248b84e9caa0c6d250d9fd5a19dbe0d9f89615c9c1c44028ab90974d8912e39a67db1f2ea65e233e77a1574a11b6265c43a32  0003-.patch
+c52a1fedd381d53477583e4bc3a8556462bec4465909476f0ae95a1a0e7b226dce61d4825e84eb83d7331a0dba3e6f0755af1f48d66066d65562bf4c61b361c6  0004-debug-easier-swap-defines.patch
+513d1a07f69bc08f417128c31fa0346f46bfc12f8301580c620a93166586c93ab6f896600f8b444d3db1155532bed9c3c52a7ae0ee151dbc40160c59e66d243a  0005-Read-serial-from-sys-devices-virtual-android_usb-and.patch"

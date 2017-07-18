@@ -1,7 +1,7 @@
-From f0df880a36f6bb0c329f2d09bde954f6103580e5 Mon Sep 17 00:00:00 2001
+From fdf4acfe10097419b407ee82f412ab01faa1b628 Mon Sep 17 00:00:00 2001
 From: Pablo Castellano <pablo@anche.no>
 Date: Mon, 10 Jul 2017 01:37:06 +0200
-Subject: [PATCH] debug easier + swap defines
+Subject: [PATCH 4/5] debug easier + swap defines
 
 ---
  wcnss_service.c | 94 ++++++++++++++++++++++++++++++++-------------------------

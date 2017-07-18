@@ -1,3 +1,12 @@
+From 30636fb982ec63c681a2a0c32ef4ac50aae43877 Mon Sep 17 00:00:00 2001
+From: Pablo Castellano <pablo@anche.no>
+Date: Mon, 10 Jul 2017 01:33:53 +0200
+Subject: [PATCH 2/5] No android
+
+---
+ wcnss_service.c | 135 ++++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 86 insertions(+), 49 deletions(-)
+
 diff --git a/wcnss_service.c b/wcnss_service.c
 index 9244ea0..995d3fb 100644
 --- a/wcnss_service.c

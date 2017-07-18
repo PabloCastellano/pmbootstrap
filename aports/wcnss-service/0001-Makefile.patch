@@ -1,0 +1,21 @@
+From 653b4f3832644ab05ff267628167ebce3f088581 Mon Sep 17 00:00:00 2001
+From: Pablo Castellano <pablo@anche.no>
+Date: Mon, 10 Jul 2017 01:33:49 +0200
+Subject: [PATCH 1/5] Makefile
+
+---
+ Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 Makefile
+
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..d165a81
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,2 @@
++wcnss_service: wcnss_service.c
++	$(CC) -o wcnss_service wcnss_service.c
+-- 
+2.7.4
+
