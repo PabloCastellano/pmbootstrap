@@ -1,0 +1,72 @@
+From 074bbacbbaf8a2a60ac53c9e4a0987a1f8f60d35 Mon Sep 17 00:00:00 2001
+From: Pablo Castellano <pablo@anche.no>
+Date: Tue, 18 Jul 2017 19:33:30 +0200
+Subject: [PATCH] Read serial from
+ /sys/devices/virtual/android_usb/android0/iSerial
+
+In case of error, default to a known working serial number
+---
+ wcnss_service.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/wcnss_service.c b/wcnss_service.c
+index e276e24..1e7b4c5 100644
+--- a/wcnss_service.c
++++ b/wcnss_service.c
+@@ -87,6 +87,9 @@ unsigned char wlan_nv_mac_addr[WLAN_ADDR_SIZE];
+ #define MAC_ADDR_ARRAY(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
+ #define MAC_ADDRESS_STR "%02x:%02x:%02x:%02x:%02x:%02x"
+ 
++#define SERIAL_PATH "/sys/devices/virtual/android_usb/android0/iSerial"
++#define DEFAULT_SERIAL "ZX1D229ZG4"
++
+ /* As we Want to write in 00:0a:f5:11:22:33 format in sysfs file
+    so taking mac length as 12 char + 5 for ":" + NULL
+  */
+@@ -107,9 +110,23 @@ int property_get(const char *key, char *value, const char *default_value)
+     } else if (!strcmp(key, "wlan.driver.ath")) { 
+         strcpy(value, WLAN_DRIVER_ATH_DEFAULT_VAL);
+     } else if (!strcmp(key, "ro.serialno")) { 
+-        strcpy(value, "ZX1D229ZG4");  // is always the same for titan?
++        fd_serial = open(SERIAL_PATH, O_RDONLY)
++        if (fd_serial < 0) {
++            printf("Failed to open iSerial: %s (%s)\n", SERIAL_PATH, strerror(errno));
++            printf("Setting default value: %s\n", DEFAULT_SERIAL);
++            strcpy(value, DEFAULT_SERIAL);
++        } else {
++            rcount = read(fd_file, (void *)value, sizeof(value));
++            if (rcount < 0) {
++                printf("Failed to read from iSerial file ; %s\n", strerror(errno));
++                printf("Setting default value: %s\n", DEFAULT_SERIAL);
++                strcpy(value, DEFAULT_SERIAL);
++            }
++        }
++
+     } else {
+-        strcpy(value, "Unknown");
++        strcpy(value, "Unknown ");
++        strcat(value, key);
+     }
+ 
+     printf("value: %s\n", value);
+@@ -205,7 +222,7 @@ int wcnss_write_cal_data(int fd_dev)
+ 
+ exit_remove:
+ 	close(fd_file);
+-	remove("WCNSS_CAL_FILE");
++	remove("WCNSS_CAL_FILE"); // bug? should be without quotes?
+ 	return rc;
+ 
+ exit_close:
+@@ -225,7 +242,7 @@ int wcnss_read_and_store_cal_data(int fd_dev)
+ 
+ 	char buf[WCNSS_CAL_CHUNK];
+ 
+-	printf("wcnss_read_and_store_cal_data trying to read cal");
++	printf("wcnss_read_and_store_cal_data trying to read cal\n");
+ 
+ 	do {
+ 		/* wait on this read until data comes from fw */
+-- 
+2.7.4
+
