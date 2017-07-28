@@ -15,7 +15,8 @@ led_off() {
 
 led_fade_in() {
     delay="${1:-0.03}"
-    for val in $(seq 0 10 250); do
+    step="${2:-10}"
+    for val in $(seq 0 $step 250); do
         _led_write $val
         sleep $delay
     done
@@ -23,7 +24,8 @@ led_fade_in() {
 
 led_fade_out() {
     delay="${1:-0.03}"
-    for val in $(seq 250 -10 0); do
+    step="${2:-10}"
+    for val in $(seq 250 -$step 0); do
         _led_write $val
         sleep $delay
     done
