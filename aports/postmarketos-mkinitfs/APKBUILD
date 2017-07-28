@@ -1,5 +1,5 @@
 pkgname=postmarketos-mkinitfs
-pkgver=0.1.8
+pkgver=0.1.9
 pkgrel=1
 pkgdesc="Tool to generate initramfs images for postmarketOS"
 url="https://github.com/postmarketOS"
@@ -27,7 +27,7 @@ package() {
 	install -Dm644 "$srcdir/10-usb-unlock.sh" \
 		"$pkgdir/etc/postmarketos-mkinitfs/hooks/"
 }
-sha512sums="0bb930b74acec8fd31bff4893a548e4be4a2fdebb79e10804381eb277fa3db95f3a963268ef79c36c8979371349488218a275c28385ace51dd0f5640c980880a  init.sh.in
-6d130be59507ad6c755ce8dfe345335e54b3891ca484e7865246ce69fe9d4e6441247acf6d17cc2ff414aaa0aca13fc28c8956b90f1626b784429adc3b5bf866  init_functions.sh
+sha512sums="868372202a1bfcf3d06f46f844ed5bcebc3f43afaeb2c943f1843162bc72f800239aa198c018afc76b0fe781fcc62747015c584334aca973134e57ccc6b1c1d5  init.sh.in
+a20d82229ac4ec23137191fa297da4dc9948af732d1ef80b93afcab3928ecc46280a7be8834af330fe1b93ce8eb6528149669c1c51536f27927758fe6818a520  init_functions.sh
 81d2782d0c4098dc503c52172a62ea90b6495d5a397f49c6a1544444e48f74e3645f17db6b710330ba70eb13defd81c47b9b5d1326146cbcd17bee59ff89b99d  mkinitfs.sh
 8129300894f0b91ba669c12df2e51fb8dd9a9366da26496523047782026714444f40037b88d3e56dc28e3049901c32bf2a4959390883dfbbff8cfa19bb82045f  10-usb-unlock.sh"

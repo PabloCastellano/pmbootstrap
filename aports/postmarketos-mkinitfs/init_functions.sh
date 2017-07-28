@@ -2,6 +2,58 @@
 # This file will be in /init_functions.sh inside the initramfs.
 IP=172.16.42.1
 
+_led_write() {
+    echo $1 > /sys/class/leds/white/brightness
+}
+
+led_off() {
+    if [ -n $1 ]; then
+        kill $1 >/dev/null 2>&1
+    fi
+    _led_write 0
+}
+
+led_fade_in() {
+    delay="${1:-0.03}"
+    for val in $(seq 0 10 250); do
+        _led_write $val
+        sleep $delay
+    done
+}
+
+led_fade_out() {
+    delay="${1:-0.03}"
+    for val in $(seq 250 -10 0); do
+        _led_write $val
+        sleep $delay
+    done
+}
+
+led_blink() {
+    repeat=$(expr "${1:-5}" - 1)
+    delay="${2:-0.25}"
+
+    for t in $(seq 0 $repeat); do
+        _led_write 250
+        sleep $delay
+        _led_write 0
+        sleep $delay
+    done
+}
+
+led_waiting_for_password() {
+    while true; do
+        led_blink 2 0.15
+        sleep 3
+    done
+}
+
+led_blink_fatal() {
+    while true; do
+        led_blink 1 0.1
+    done
+}
+
 # Redirect stdout and stderr to logfile
 setup_log() {
 	# Bail out if PMOS_NO_OUTPUT_REDIRECT is set
@@ -161,6 +213,8 @@ start_udhcpd() {
 }
 
 unlock_root_partition() {
+	led_waiting_for_password &
+	pid=$!
 	# Wait for the root partition (and unlock it if it is encrypted)
 	while ! [ -e /sysroot/usr ]; do
 		partition="$(find_root_partition)"
@@ -181,6 +235,9 @@ unlock_root_partition() {
 
 	# Mount the root partition
 	[ -e /sysroot/usr ] || mount -w -t ext4 "$partition" /sysroot
+
+	# Stop blinking
+	led_off $pid
 }
 
 # $1: path to ppm.gz file
