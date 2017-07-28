@@ -65,11 +65,12 @@ def export(args, flavor, folder):
             msg += " (" + info[basename] + ")"
         logging.info(msg)
 
-        if os.path.exists(link):
+        if not args.force and os.path.exists(link):
             if (os.path.islink(link) and
                     os.path.abspath(os.readlink(link)) == os.path.abspath(file)):
                 continue
             raise RuntimeError("File exists: " + link)
 
         # Create the symlink
-        pmb.helpers.run.user(args, ["ln", "-s", file, link])
+        ln_argument = "-sf" if args.force else "-s"
+        pmb.helpers.run.user(args, ["ln", ln_argument, file, link])

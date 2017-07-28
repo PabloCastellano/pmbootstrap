@@ -43,6 +43,8 @@ def arguments_flasher(subparser):
         action.add_argument("--flavor", default=None)
 
     # Export: additional arguments
+    export.add_argument("-f", "--force", action="store_true",
+                        help="remove existing destination files")
     export.add_argument("export_folder", help="export folder, defaults to"
                                               " /tmp/postmarketOS-export",
                         default="/tmp/postmarketOS-export", nargs="?")
