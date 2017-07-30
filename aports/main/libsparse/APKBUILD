@@ -1,0 +1,28 @@
+pkgname=libsparse
+pkgver="7.1.2_r6"
+pkgrel=1
+pkgdesc="Android Sparse library"
+url="https://android.googlesource.com"
+arch="all"
+license="APACHE2"
+depends="python3"
+subpackages=""
+source="$pkgname-$pkgver.tar.gz::https://android.googlesource.com/platform/system/core/+archive/android-${pkgver}/${pkgname}.tar.gz Makefile"
+options="!check"
+
+build() {
+    cd "$srcdir"
+    sed -i -e 's./usr/bin/env python./usr/bin/env python3.' simg_dump.py
+    make
+}
+
+package() {
+
+    for i in append2simg img2simg simg2img simg2simg simg_dump.py; do
+        install -D -m755 "$srcdir"/"$i" \
+            "$pkgdir"/usr/bin/"$i" || return 1
+    done
+}
+
+sha512sums="345de403df0e15c18dcf497b9993810f85d56dc03ef43df8dca1d38da8275b54d7f79455a206f45b31cf79013894f4c2299e5296845fe54d31ffe0727c63e53b  libsparse-7.1.2_r6.tar.gz
+2444ea01aa6b8a0e839851225fba335635a2cde6139fdec169ba90d81656f74b5d3e62c6a9b046dcee0c41bdadb34c84ba116db59ba5ce16b7f27c8c478fbff7  Makefile"
