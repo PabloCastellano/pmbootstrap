@@ -18,6 +18,7 @@ for DIR in $FIRMWARE_DIRS; do
     exit 0
 done
 
-printf -1 > "/sys/$DEVPATH/loading"
+# shellcheck disable=SC2039
+echo -1 > "/sys/$DEVPATH/loading"
 echo "cannot find firmware file '$FIRMWARE'"
 exit 1
