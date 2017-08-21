@@ -18,7 +18,6 @@ along with pmbootstrap.  If not, see <http://www.gnu.org/licenses/>.
 """
 import logging
 
-import pmb.chroot
 import pmb.config
 import pmb.helpers.git
 
@@ -26,24 +25,20 @@ import pmb.helpers.git
 def write_os_release(args, suffix):
     logging.info("(" + suffix + ") write /etc/os-release")
     revision = pmb.helpers.git.rev_parse(args)
-    os_release = "asdfg"
+    filepath = args.work + "/chroot_" + suffix + "/etc/os-release"
 
-    pmb.chroot.root(args, ["echo", os_release, ">", "/etc/os-release"], suffix)
-    pmb.chroot.root(args, ["echo", os_release, ">", "/etc/os-release2"], suffix)
-    return os_release
-
-
-revision=1
-"""
-PRETTY_NAME="postmarketOS {version}"
-NAME="postmarketOS"
-VERSION_ID="{version}"
-VERSION="{version}"
-ID=postmarketos
-ID_LIKE=alpine
-HOME_URL="http://www.postmarketos.org/"
-SUPPORT_URL="https://github.com/postmarketOS"
-BUG_REPORT_URL="https://github.com/postmarketOS"
-PMOS_HASH="{hash}"
-""".format(version=pmb.config.version, hash=revision)
-
+    with open(filepath, "w") as fp:
+        os_release = \
+            """
+            PRETTY_NAME="postmarketOS {version}"
+            NAME="postmarketOS"
+            VERSION_ID="{version}"
+            VERSION="{version}"
+            ID=postmarketos
+            ID_LIKE=alpine
+            HOME_URL="http://www.postmarketos.org/"
+            SUPPORT_URL="https://github.com/postmarketOS"
+            BUG_REPORT_URL="https://github.com/postmarketOS"
+            PMOS_HASH="{hash}"
+            """.format(version=pmb.config.version, hash=revision)
+        fp.write(os_release)
